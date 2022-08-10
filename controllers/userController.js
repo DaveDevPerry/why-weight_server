@@ -38,4 +38,25 @@ const signupUser = async (req, res) => {
 	}
 };
 
-module.exports = { signupUser, loginUser };
+// update a user
+const updateUser = async (req, res) => {
+	const { id } = req.params;
+	// check if id exists
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+		return res.status(404).json({ error: 'No such user' });
+	}
+	const user = await User.findByIdAndUpdate(
+		{ _id: id },
+		// second object contains data to update
+		{
+			// gets all properties in body
+			...req.body,
+		}
+	);
+	if (!user) {
+		return res.status(404).json({ error: 'No such user' });
+	}
+	res.status(200).json(user);
+};
+
+module.exports = { signupUser, loginUser, updateUser };

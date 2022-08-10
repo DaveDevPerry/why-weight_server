@@ -14,6 +14,14 @@ const userSchema = new Schema({
 		type: String,
 		required: true,
 	},
+	name: {
+		type: String,
+		required: false,
+	},
+	d_o_b: {
+		type: Date,
+		required: false,
+	},
 });
 
 // @ note  DON'T USE ARROW FUNCTIONS IF USING "THIS" KEYWORD

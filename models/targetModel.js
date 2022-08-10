@@ -17,6 +17,10 @@ const targetSchema = new Schema(
 			type: Date,
 			required: true,
 		},
+		deadline_reason: {
+			type: String,
+			required: false,
+		},
 		user_id: {
 			type: String,
 			required: true,

@@ -26,7 +26,7 @@ const getTarget = async (req, res) => {
 
 // create new workout
 const createTarget = async (req, res) => {
-	const { target_weight, deadline_date } = req.body;
+	const { target_weight, deadline_date, deadline_reason } = req.body;
 	// console.log(weight, 'weight');
 	// const { title, target_weight, reps } = req.body;
 
@@ -35,6 +35,9 @@ const createTarget = async (req, res) => {
 
 	if (!deadline_date) {
 		emptyFields.push('deadline_date');
+	}
+	if (!deadline_reason) {
+		emptyFields.push('deadline_reason');
 	}
 	if (!target_weight) {
 		emptyFields.push('target_weight');
@@ -55,6 +58,7 @@ const createTarget = async (req, res) => {
 		const target = await Target.create({
 			target_weight,
 			deadline_date,
+			deadline_reason,
 			user_id,
 		});
 		res.status(200).json(target);
