@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
+const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
 const weightRoutes = require('./routes/weights');
@@ -9,7 +10,6 @@ const targetRoutes = require('./routes/targets');
 const userRoutes = require('./routes/user');
 
 // express app
-const app = express();
 app.use(cors());
 
 // middleware
@@ -29,7 +29,9 @@ app.use('/api/user', userRoutes);
 
 // connect to db
 mongoose
-	.connect(process.env.MONGO_URI)
+	.connect(process.env.MONGO_URI, {
+		useNewUrlParser: true,
+	})
 	.then(() => {
 		// listen for requests once connected to db
 		app.listen(process.env.PORT, () => {
