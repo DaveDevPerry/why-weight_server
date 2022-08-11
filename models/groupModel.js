@@ -30,6 +30,15 @@ const groupSchema = new Schema(
 				},
 			],
 		},
+		all_participants: {
+			type: [
+				{
+					type: mongoose.Schema.Types.ObjectId,
+					ref: 'User',
+					required: true,
+				},
+			],
+		},
 	},
 	{ timestamps: true }
 );

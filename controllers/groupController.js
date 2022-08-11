@@ -68,6 +68,7 @@ const createGroup = async (req, res) => {
 			// participants.push(participant_id),
 		});
 		group.participants.push(participant_id);
+		group.all_participants.push(participant_id);
 		await group.save();
 		// group.participants.push(req.params.id)
 		res.status(200).json(group);
