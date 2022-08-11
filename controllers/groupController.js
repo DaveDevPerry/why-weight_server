@@ -57,16 +57,29 @@ const createGroup = async (req, res) => {
 	try {
 		// user._id comes from middleware VITAL FOR weights SPECIFIC TO A USER
 		const chairperson_user_id = req.user._id;
+		const participant_user_id = req.user._id;
+		const participant_id = req.user._id;
 		const group = await Group.create({
 			title,
 			pin,
 			chairperson_user_id,
+			participant_user_id,
+			// $push: { participants: participant_id },
+			// participants.push(participant_id),
 		});
+		group.participants.push(participant_id);
+		await group.save();
+		// group.participants.push(req.params.id)
 		res.status(200).json(group);
 	} catch (error) {
 		res.status(400).json({ error: error.message });
 	}
 };
+
+// participants,
+// participants: participants.push(participant),
+// participants: participant,
+// participants: [...state, participant],
 
 // delete a workout
 const deleteGroup = async (req, res) => {

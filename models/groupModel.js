@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+// const User = require('../models/userModel')
 
 const Schema = mongoose.Schema;
 
@@ -13,15 +14,39 @@ const groupSchema = new Schema(
 			type: String,
 			required: true,
 		},
-		// users: {
-		// 	type: Object
-		// }
 		chairperson_user_id: {
 			type: String,
 			required: true,
+		},
+		participant_user_id: {
+			type: String,
+			required: true,
+		},
+		participants: {
+			type: [
+				{
+					type: String,
+					required: true,
+				},
+			],
 		},
 	},
 	{ timestamps: true }
 );
 
 module.exports = mongoose.model('Group', groupSchema);
+
+// participants: [
+// 	{
+// 		type: String,
+// 		// ref: 'User',
+// 		// required: true,
+// 	},
+// ],
+// participants: [
+// 	{
+// 		type: mongoose.Schema.Types.ObjectId,
+// 		ref: 'User',
+// 		// required: true,
+// 	},
+// ],
