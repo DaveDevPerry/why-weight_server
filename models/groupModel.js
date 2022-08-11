@@ -13,6 +13,13 @@ const groupSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		// users: {
+		// 	type: Object
+		// }
+		chairperson_user_id: {
+			type: String,
+			required: true,
+		},
 	},
 	{ timestamps: true }
 );

@@ -8,6 +8,7 @@ const weightRoutes = require('./routes/weights');
 const targetRoutes = require('./routes/targets');
 // const workoutRoutes = require('./routes/workouts');
 const userRoutes = require('./routes/user');
+const groupRoutes = require('./routes/groups');
 
 // express app
 app.use(cors());
@@ -26,6 +27,7 @@ app.use('/api/weights', weightRoutes);
 app.use('/api/targets', targetRoutes);
 // app.use('/api/workouts', workoutRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/groups', groupRoutes);
 
 // connect to db
 mongoose
