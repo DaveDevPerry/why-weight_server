@@ -9,6 +9,7 @@ const getGroups = async (req, res) => {
 	const groups = await Group.find({ chairperson_user_id }).sort({
 		createdAt: -1,
 	});
+	// .populate({ path: 'chairperson_user_id' });
 	res.status(200).json(groups);
 };
 
@@ -19,7 +20,14 @@ const getGroup = async (req, res) => {
 	if (!mongoose.Types.ObjectId.isValid(id)) {
 		return res.status(404).json({ error: 'No such group' });
 	}
-	const group = await Group.findById(id);
+	// Claim.findOne({_id : claimId}).populate({path: 'billed_insurances'})
+
+	const group = await Group.findById(id)
+		.populate({
+			path: 'all_participants',
+		})
+		.populate('chairperson_user_id');
+	// const group = await Group.findById(id);
 	if (!group) {
 		return res.status(404).json({ error: 'No such group' });
 	}
@@ -56,19 +64,20 @@ const createGroup = async (req, res) => {
 	// add doc to db
 	try {
 		// user._id comes from middleware VITAL FOR weights SPECIFIC TO A USER
-		const chairperson_user_id = req.user._id;
+		// const chairperson_user_id = req.user._id;
 		const participant_user_id = req.user._id;
 		const participant_id = req.user._id;
 		const group = await Group.create({
 			title,
 			pin,
-			chairperson_user_id,
+			// chairperson_user_id,
 			participant_user_id,
 			// $push: { participants: participant_id },
 			// participants.push(participant_id),
 		});
 		group.participants.push(participant_id);
 		group.all_participants.push(participant_id);
+		group.chairperson_user_id = req.user._id;
 		await group.save();
 		// group.participants.push(req.params.id)
 		res.status(200).json(group);

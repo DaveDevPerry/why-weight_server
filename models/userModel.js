@@ -4,25 +4,32 @@ const validator = require('validator');
 
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
-	email: {
-		type: String,
-		required: true,
-		unique: true,
+const userSchema = new Schema(
+	{
+		email: {
+			type: String,
+			required: true,
+			unique: true,
+		},
+		password: {
+			type: String,
+			required: true,
+		},
+		first_name: {
+			type: String,
+			required: false,
+		},
+		last_name: {
+			type: String,
+			required: false,
+		},
+		// d_o_b: {
+		// 	type: Date,
+		// 	required: false,
+		// },
 	},
-	password: {
-		type: String,
-		required: true,
-	},
-	name: {
-		type: String,
-		required: false,
-	},
-	d_o_b: {
-		type: Date,
-		required: false,
-	},
-});
+	{ timestamps: true }
+);
 
 // @ note  DON'T USE ARROW FUNCTIONS IF USING "THIS" KEYWORD
 // static signup method - call this method on the user model whenever we want to signup a new user
@@ -75,6 +82,8 @@ userSchema.statics.login = async function (email, password) {
 	if (!match) {
 		throw Error('Incorrect password');
 	}
+
+	console.log(user, 'user user model static');
 
 	return user;
 };

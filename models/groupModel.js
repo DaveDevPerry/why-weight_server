@@ -14,9 +14,16 @@ const groupSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		// chairperson_user_id: {
+		// 	type: String,
+		// 	required: true,
+		// },
 		chairperson_user_id: {
-			type: String,
-			required: true,
+			type: {
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'User',
+				required: true,
+			},
 		},
 		participant_user_id: {
 			type: String,
