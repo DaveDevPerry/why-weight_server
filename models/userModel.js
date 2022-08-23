@@ -23,6 +23,10 @@ const userSchema = new Schema(
 			type: String,
 			required: false,
 		},
+		group_id: {
+			type: String,
+			required: false,
+		},
 		// d_o_b: {
 		// 	type: Date,
 		// 	required: false,
