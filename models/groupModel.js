@@ -17,15 +17,15 @@ const groupSchema = new Schema(
 			required: true,
 		},
 		chairperson_user_id: {
-			type: {
-				type: {
-					type: mongoose.Schema.Types.ObjectId,
-					ref: 'User',
-					// required: true,
-					required: false,
-				},
-			},
+			// type: {
+			// type: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
+			required: true,
+			// required: false,
 		},
+		// },
+		// },
 		all_participants: {
 			type: [
 				{
@@ -67,11 +67,21 @@ groupSchema.statics.signup = async function (title, pin, userID) {
 	const salt = await bcrypt.genSalt(10);
 	const hash = await bcrypt.hash(pin, salt);
 
+	const currentUser = await User.findById(userID);
+
+	console.log(currentUser, 'currentUser');
+
 	const group = await this.create({
 		title,
 		pin: hash,
-		chairperson_user_id: userID,
+		chairperson_user_id: currentUser._id,
+		// chairperson_user_id: userID,
+		// all_participants.push(currentUser._id),
+		// all_participants: all_participants.push(currentUser._id),
 	});
+	// (group.chairperson_user_id = currentUser._id),
+	group.all_participants.push(currentUser._id);
+	await group.save();
 
 	return group;
 };
