@@ -1,6 +1,52 @@
 const Group = require('../models/groupModel');
 // const User = require('../models/userModel');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+
+// mongo uses _id for id property
+const createToken = (_id) => {
+	// {payload} , secret, expires 3 days
+	return jwt.sign({ _id }, process.env.SECRET, { expiresIn: '3d' });
+};
+
+// login user
+const joinGroup = async (req, res) => {
+	const { title, pin } = req.body;
+	try {
+		// login() is the static method of user
+		const group = await Group.login(title, pin);
+		// create a token
+		const token = createToken(group._id);
+		console.log(group, 'user login user');
+		// const first_name = user.first_name;
+		// const last_name = user.last_name;
+		const groupId = group._id;
+
+		res.status(200).json({ title, token, groupId });
+	} catch (error) {
+		res.status(400).json({ error: error.message });
+	}
+	// res.json({ mssg: 'login user' });
+};
+
+// signup user
+const signupGroup = async (req, res) => {
+	const { title, pin, userID } = req.body;
+	// const user_id = req.user._id;
+	try {
+		// signup() is the static method of user
+		const group = await Group.signup(title, pin, userID);
+		// const group = await Group.signup(title, pin, user_id);
+		// create a token
+		const token = createToken(group._id);
+
+		// chairperson_user_id: req.user._id,
+
+		res.status(200).json({ title, token });
+	} catch (error) {
+		res.status(400).json({ error: error.message });
+	}
+};
 
 // get all weights
 const getGroups = async (req, res) => {
@@ -32,9 +78,20 @@ const getGroups = async (req, res) => {
 		// 	path: 'chairperson_user_id.first_name',
 		// })
 		// .exec();
-		.populate({
-			path: 'all_participants',
-		});
+		.populate('all_participants')
+		.exec();
+
+	const clonedGroups = groups;
+	console.log(clonedGroups, 'cloned groups');
+
+	// .populate({
+	// 	path: 'all_participants',
+	// });
+
+	// .populate({
+	// 	path: 'User',
+	// 	populate: [{ path: 'all_participants' }, { path: 'chairperson_user_id' }],
+	// });
 	// .populate({
 	// 	path: 'chairperson_user_id',
 	// 	model: 'User',
@@ -75,15 +132,14 @@ const getGroup = async (req, res) => {
 	}
 	// Claim.findOne({_id : claimId}).populate({path: 'billed_insurances'})
 
+	// const group = await Group.findById(id).populate({
+	// 	path: 'User',
+	// 	populate: [{ path: 'all_participants' }, { path: 'chairperson_user_id' }],
+	// });
 	const group = await Group.findById(id).populate({
 		path: 'all_participants',
 	});
-	// .populate({
-	// 	path: 'chairperson_user_id',
-	// 	model: 'User',
-	// 	select: '_id first_name',
-	// });
-	// const group = await Group.findById(id);
+
 	if (!group) {
 		return res.status(404).json({ error: 'No such group' });
 	}
@@ -127,11 +183,11 @@ const createGroup = async (req, res) => {
 			title,
 			pin,
 			chairperson_user_id: req.user._id,
-			participant_user_id,
+			// participant_user_id,
 			// $push: { participants: participant_id },
 			// participants.push(participant_id),
 		});
-		group.participants.push(req.user._id);
+		// group.participants.push(req.user._id);
 		group.all_participants.push(req.user._id);
 		// group.participants.push(participant_id);
 		// group.all_participants.push(participant_id);
@@ -166,6 +222,9 @@ const deleteGroup = async (req, res) => {
 // update a group
 const updateGroup = async (req, res) => {
 	const { id } = req.params;
+	const userId = req.user._id;
+	console.log(id, 'id in group controller');
+	console.log(userId, 'userId in group controller');
 	// check if id exists
 	if (!mongoose.Types.ObjectId.isValid(id)) {
 		return res.status(404).json({ error: 'No such group' });
@@ -176,8 +235,13 @@ const updateGroup = async (req, res) => {
 		{
 			// gets all properties in body
 			...req.body,
+			// all_participants: all_participants.push(userId),
+			// all_participants: all_participants.push(userId),
 		}
 	);
+	// group.all_participants.push(userId);
+	// await group.save();
+	console.log(group, 'group in update');
 	if (!group) {
 		return res.status(404).json({ error: 'No such group' });
 	}
@@ -190,4 +254,6 @@ module.exports = {
 	createGroup,
 	deleteGroup,
 	updateGroup,
+	joinGroup,
+	signupGroup,
 };
