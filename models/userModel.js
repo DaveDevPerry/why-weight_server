@@ -27,6 +27,16 @@ const userSchema = new Schema(
 			type: String,
 			required: false,
 		},
+		groups: {
+			type: [
+				{
+					type: mongoose.Schema.Types.ObjectId,
+					ref: 'Group',
+				},
+			],
+			required: false,
+		},
+
 		// d_o_b: {
 		// 	type: Date,
 		// 	required: false,

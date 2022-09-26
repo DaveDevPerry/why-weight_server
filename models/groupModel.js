@@ -87,7 +87,8 @@ groupSchema.statics.signup = async function (title, pin, userID) {
 };
 
 // static login method
-groupSchema.statics.login = async function (title, pin) {
+groupSchema.statics.login = async function (title, pin, userID) {
+	console.log(userID, 'userID in login');
 	// check fields are filled
 	if (!title || !pin) {
 		throw Error('All fields must be filled');
@@ -106,8 +107,13 @@ groupSchema.statics.login = async function (title, pin) {
 		throw Error('Incorrect pin');
 	}
 
-	console.log(group, 'group group model static');
+	const currentUser = await User.findById(userID);
 
+	console.log(currentUser, 'currentUser');
+
+	group.all_participants.push(currentUser._id);
+	console.log(group, 'group group login model static');
+	await group.save();
 	return group;
 };
 
