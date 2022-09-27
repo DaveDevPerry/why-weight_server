@@ -16,6 +16,10 @@ const groupSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		pinString: {
+			type: String,
+			required: true,
+		},
 		chairperson_user_id: {
 			// type: {
 			// type: {
@@ -74,6 +78,7 @@ groupSchema.statics.signup = async function (title, pin, userID) {
 	const group = await this.create({
 		title,
 		pin: hash,
+		pinString: pin,
 		chairperson_user_id: currentUser._id,
 		// chairperson_user_id: userID,
 		// all_participants.push(currentUser._id),
@@ -82,6 +87,13 @@ groupSchema.statics.signup = async function (title, pin, userID) {
 	// (group.chairperson_user_id = currentUser._id),
 	group.all_participants.push(currentUser._id);
 	await group.save();
+
+	const user = await User.findByIdAndUpdate(
+		{ _id: currentUser._id },
+		{ $push: { groups: group._id } }
+	);
+
+	console.log(user, 'updated groups with group id?');
 
 	return group;
 };
