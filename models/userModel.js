@@ -45,6 +45,15 @@ const userSchema = new Schema(
 			],
 			required: false,
 		},
+		targets: {
+			type: [
+				{
+					type: mongoose.Schema.Types.ObjectId,
+					ref: 'Target',
+				},
+			],
+			required: false,
+		},
 
 		// d_o_b: {
 		// 	type: Date,
