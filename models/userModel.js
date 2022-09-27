@@ -36,15 +36,15 @@ const userSchema = new Schema(
 			],
 			required: false,
 		},
-		// weights: {
-		// 	type: [
-		// 		{
-		// 			type: mongoose.Schema.Types.ObjectId,
-		// 			ref: 'Weight',
-		// 		},
-		// 	],
-		// 	required: false,
-		// },
+		weights: {
+			type: [
+				{
+					type: mongoose.Schema.Types.ObjectId,
+					ref: 'Weight',
+				},
+			],
+			required: false,
+		},
 
 		// d_o_b: {
 		// 	type: Date,
