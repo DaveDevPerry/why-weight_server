@@ -17,11 +17,11 @@ const userSchema = new Schema(
 		},
 		first_name: {
 			type: String,
-			required: false,
+			required: true,
 		},
 		last_name: {
 			type: String,
-			required: false,
+			required: true,
 		},
 		group_id: {
 			type: String,
@@ -36,6 +36,15 @@ const userSchema = new Schema(
 			],
 			required: false,
 		},
+		// weights: {
+		// 	type: [
+		// 		{
+		// 			type: mongoose.Schema.Types.ObjectId,
+		// 			ref: 'Weight',
+		// 		},
+		// 	],
+		// 	required: false,
+		// },
 
 		// d_o_b: {
 		// 	type: Date,
@@ -47,9 +56,14 @@ const userSchema = new Schema(
 
 // @ note  DON'T USE ARROW FUNCTIONS IF USING "THIS" KEYWORD
 // static signup method - call this method on the user model whenever we want to signup a new user
-userSchema.statics.signup = async function (email, password) {
+userSchema.statics.signup = async function (
+	email,
+	password,
+	first_name,
+	last_name
+) {
 	// validation
-	if (!email || !password) {
+	if (!email || !password || !first_name || !last_name) {
 		throw Error('All fields must be filled');
 	}
 	// uses validator to check if valid email
@@ -72,7 +86,12 @@ userSchema.statics.signup = async function (email, password) {
 	const salt = await bcrypt.genSalt(10);
 	const hash = await bcrypt.hash(password, salt);
 
-	const user = await this.create({ email, password: hash });
+	const user = await this.create({
+		email,
+		password: hash,
+		first_name,
+		last_name,
+	});
 
 	return user;
 };

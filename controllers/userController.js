@@ -31,10 +31,10 @@ const loginUser = async (req, res) => {
 
 // signup user
 const signupUser = async (req, res) => {
-	const { email, password } = req.body;
+	const { email, password, first_name, last_name } = req.body;
 	try {
 		// signup() is the static method of user
-		const user = await User.signup(email, password);
+		const user = await User.signup(email, password, first_name, last_name);
 		// create a token
 		const token = createToken(user._id);
 
