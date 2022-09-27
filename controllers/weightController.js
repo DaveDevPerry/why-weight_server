@@ -1,14 +1,43 @@
 const Weight = require('../models/weightModel');
+const User = require('../models/userModel');
 const mongoose = require('mongoose');
 
 // get all weights
 const getWeights = async (req, res) => {
-	const user_id = req.user._id;
+	// const user_id = req.user._id;
+
+	// get users weights
+	const usersWeights = await User.findById(req.user._id).populate({
+		path: 'weights',
+	});
+
+	console.log(usersWeights, 'usersWeights getWeights');
+
+	const userWeights = await usersWeights.weights;
+
+	console.log(userWeights, 'user weights array');
+
+	let weightIDs = userWeights.map(({ _id }) => _id);
+
+	console.log(weightIDs, 'user weightIDs array');
+
+	const records = await Weight.find({ _id: { $in: weightIDs } });
+
+	console.log(records, 'user weight records array');
+	res.status(200).json(records);
 
 	// only finds weights that match user_id
-	const weights = await Weight.find({ user_id }).sort({ createdAt: -1 });
-	res.status(200).json(weights);
+	// const weights = await Weight.find({ user_id }).sort({ createdAt: -1 });
+	// res.status(200).json(weights);
 };
+// // get all weights
+// const getWeights = async (req, res) => {
+// 	const user_id = req.user._id;
+
+// 	// only finds weights that match user_id
+// 	const weights = await Weight.find({ user_id }).sort({ createdAt: -1 });
+// 	res.status(200).json(weights);
+// };
 
 // get a single workout
 const getWeight = async (req, res) => {
