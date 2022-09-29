@@ -142,6 +142,13 @@ groupSchema.statics.login = async function (title, pin, userID) {
 	group.all_participants.push(currentUser._id);
 	console.log(group, 'group group login model static');
 	await group.save();
+
+	const user = await User.findByIdAndUpdate(
+		{ _id: currentUser._id },
+		{ $push: { groups: group._id } }
+	);
+
+	console.log(user, 'updated groups with group id?');
 	return group;
 };
 
