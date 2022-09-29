@@ -28,10 +28,16 @@ const joinGroup = async (req, res) => {
 
 // signup user
 const signupGroup = async (req, res) => {
-	const { title, pin, userID } = req.body;
+	const { title, pin, userID, target_date, target_reason } = req.body;
 	try {
 		// signup() is the static method of user
-		const group = await Group.signup(title, pin, userID);
+		const group = await Group.signup(
+			title,
+			pin,
+			userID,
+			target_date,
+			target_reason
+		);
 		// create a token
 		const token = createToken(group._id);
 

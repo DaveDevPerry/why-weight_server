@@ -20,6 +20,14 @@ const groupSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		target_date: {
+			type: Date,
+			required: true,
+		},
+		target_reason: {
+			type: String,
+			required: false,
+		},
 		chairperson_user_id: {
 			// type: {
 			// type: {
@@ -45,7 +53,13 @@ const groupSchema = new Schema(
 
 // @ note  DON'T USE ARROW FUNCTIONS IF USING "THIS" KEYWORD
 // static signup method - call this method on the user model whenever we want to signup a new user
-groupSchema.statics.signup = async function (title, pin, userID) {
+groupSchema.statics.signup = async function (
+	title,
+	pin,
+	userID,
+	target_date,
+	target_reason
+) {
 	console.log(userID, 'userID in signup');
 	// validation
 	if (!title || !pin) {
@@ -79,6 +93,8 @@ groupSchema.statics.signup = async function (title, pin, userID) {
 		title,
 		pin: hash,
 		pinString: pin,
+		target_date,
+		target_reason,
 		chairperson_user_id: currentUser._id,
 		// chairperson_user_id: userID,
 		// all_participants.push(currentUser._id),
