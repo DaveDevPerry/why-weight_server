@@ -1,5 +1,6 @@
 const Group = require('../models/groupModel');
 const User = require('../models/userModel');
+// const Weight = require('../models/weightModel');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
@@ -67,9 +68,54 @@ const getGroups = async (req, res) => {
 	// const groupIDs = userGroups.map((_id) => _id);
 	console.log(groupIDs, 'user groupIDs array');
 
-	const records = await Group.find({ _id: { $in: groupIDs } }).populate({
-		path: 'all_participants chairperson_user_id',
-	});
+	// 	.populate({
+	// 		path: 'classes',
+	// 		model: 'Classroom',
+	// 		populate: [{
+	// 				path: 'instructors',
+	// 				model: 'User'
+	// 		},
+	// 		{
+	// 				path: 'location',
+	// 				model: 'Location'
+	// 		}]
+	// })
+
+	const records = await Group.find({ _id: { $in: groupIDs } }).populate([
+		{
+			path: 'chairperson_user_id',
+		},
+		{
+			path: 'all_participants',
+			populate: [
+				{
+					path: 'weights',
+					model: 'Weight',
+				},
+				// {
+				// 	path: 'groups',
+				// 	model: 'Group',
+				// },
+				{
+					path: 'targets',
+					model: 'Target',
+				},
+			],
+		},
+	]);
+	// const records = await Group.find({ _id: { $in: groupIDs } }).populate({
+	// 	// path: 'chairperson_user_id',
+	// 	path: 'all_participants',
+	// 	populate: [
+	// 		{
+	// 			path: 'weights',
+	// 			model: 'Weight',
+	// 		},
+	// 	],
+	// });
+	// const records = await Group.find({ _id: { $in: groupIDs } }).populate({
+	// 	path: 'all_participants chairperson_user_id',
+	// });
 	// const records = await Group.find({ _id: { $in: groupIDs } });
 
 	console.log(records, 'user records array');
