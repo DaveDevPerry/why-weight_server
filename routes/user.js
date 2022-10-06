@@ -5,7 +5,7 @@ const {
 	signupUser,
 	loginUser,
 	updateUser,
-	// getUser,
+	getUser,
 } = require('../controllers/userController');
 const requireAuth = require('../middleware/requireAuth');
 
@@ -18,7 +18,7 @@ router.post('/login', loginUser);
 router.post('/signup', signupUser);
 
 // Get User
-// router.get('/:id', getUser);
+router.get('/:id', getUser);
 
 // this fires the middleware function to ensure all workout routes require authentication
 

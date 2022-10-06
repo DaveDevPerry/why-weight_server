@@ -19,7 +19,7 @@ const requireAuth = async (req, res, next) => {
 
 		// find user in db - select just returns that field
 		req.user = await User.findOne({ _id }).select('_id');
-		console.log(await User.findOne({ _id }).select('_id'), 'user require auth');
+		// console.log(await User.findOne({ _id }).select('_id'), 'user require auth');
 		next();
 	} catch (error) {
 		console.log(error);
