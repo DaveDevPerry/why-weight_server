@@ -4,6 +4,9 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
+
+require('./mailer/app.js');
+
 const weightRoutes = require('./routes/weights');
 const targetRoutes = require('./routes/targets');
 // const workoutRoutes = require('./routes/workouts');
@@ -43,3 +46,5 @@ mongoose
 	.catch((error) => {
 		console.log(error);
 	});
+
+//
