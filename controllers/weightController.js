@@ -11,19 +11,19 @@ const getWeights = async (req, res) => {
 		path: 'weights',
 	});
 
-	console.log(usersWeights, 'usersWeights getWeights');
+	// console.log(usersWeights, 'usersWeights getWeights');
 
 	const userWeights = await usersWeights.weights;
 
-	console.log(userWeights, 'user weights array');
+	// console.log(userWeights, 'user weights array');
 
 	let weightIDs = userWeights.map(({ _id }) => _id);
 
-	console.log(weightIDs, 'user weightIDs array');
+	// console.log(weightIDs, 'user weightIDs array');
 
 	const records = await Weight.find({ _id: { $in: weightIDs } });
 
-	console.log(records, 'user weight records array');
+	// console.log(records, 'user weight records array');
 	res.status(200).json(records);
 
 	// only finds weights that match user_id

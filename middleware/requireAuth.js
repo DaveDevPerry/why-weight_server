@@ -4,6 +4,7 @@ const User = require('../models/userModel');
 const requireAuth = async (req, res, next) => {
 	// verify authentication
 	const { authorization } = req.headers;
+	// console.log(authorization, 'authorization');
 
 	// check if header exists
 	if (!authorization) {
@@ -12,6 +13,7 @@ const requireAuth = async (req, res, next) => {
 
 	// get token from header - remove Bearer
 	const token = authorization.split(' ')[1];
+	// console.log(token, 'token');
 
 	try {
 		// verify token has not been tampered with

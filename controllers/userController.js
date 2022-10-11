@@ -47,7 +47,7 @@ const signupUser = async (req, res) => {
 // // get a single user
 const getUser = async (req, res) => {
 	const { id } = req.params;
-	console.log(id, 'id in get User controller');
+	// console.log(id, 'id in get User controller');
 	// check if id exists
 	if (!mongoose.Types.ObjectId.isValid(id)) {
 		return res.status(404).json({ error: 'No such user' });

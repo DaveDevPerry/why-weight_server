@@ -18,7 +18,7 @@ const joinGroup = async (req, res) => {
 		const group = await Group.login(title, pin, userID);
 		// create a token
 		const token = createToken(group._id);
-		console.log(group, 'user login user');
+		// console.log(group, 'user login user');
 		const groupId = group._id;
 
 		res.status(200).json({ title, token, groupId });
@@ -57,16 +57,16 @@ const getGroups = async (req, res) => {
 		path: 'groups',
 	});
 
-	console.log(usersGroups, 'usersGroups getGroups');
+	// console.log(usersGroups, 'usersGroups getGroups');
 
 	const userGroups = await usersGroups.groups;
 
-	console.log(userGroups, 'user groups array');
+	// console.log(userGroups, 'user groups array');
 
 	let groupIDs = userGroups.map(({ _id }) => _id);
 
 	// const groupIDs = userGroups.map((_id) => _id);
-	console.log(groupIDs, 'user groupIDs array');
+	// console.log(groupIDs, 'user groupIDs array');
 
 	// 	.populate({
 	// 		path: 'classes',
@@ -118,7 +118,7 @@ const getGroups = async (req, res) => {
 	// });
 	// const records = await Group.find({ _id: { $in: groupIDs } });
 
-	console.log(records, 'user records array');
+	// console.log(records, 'user records array');
 
 	// const groups = await Group.find({
 	// 	all_participants: { $in: [req.user._id] },
@@ -250,8 +250,8 @@ const deleteGroup = async (req, res) => {
 const updateGroup = async (req, res) => {
 	const { id } = req.params;
 	const userId = req.user._id;
-	console.log(id, 'id in group controller');
-	console.log(userId, 'userId in group controller');
+	// console.log(id, 'id in group controller');
+	// console.log(userId, 'userId in group controller');
 	// check if id exists
 	if (!mongoose.Types.ObjectId.isValid(id)) {
 		return res.status(404).json({ error: 'No such group' });
@@ -268,7 +268,7 @@ const updateGroup = async (req, res) => {
 	);
 	// group.all_participants.push(userId);
 	// await group.save();
-	console.log(group, 'group in update');
+	// console.log(group, 'group in update');
 	if (!group) {
 		return res.status(404).json({ error: 'No such group' });
 	}
