@@ -34,12 +34,19 @@ const transporter = nodemailer.createTransport({
 // });
 
 // send email
-cron.schedule('* 0 20 * * ', () => {
-	transporter.sendMail(mailOptions, (error, info) => {
-		if (error) {
-			console.log(error);
-		} else {
-			console.log('Email send: ' + info.response);
-		}
-	});
-});
+cron.schedule(
+	'* 0 22 * * ',
+	() => {
+		transporter.sendMail(mailOptions, (error, info) => {
+			if (error) {
+				console.log(error);
+			} else {
+				console.log('Email send: ' + info.response);
+			}
+		});
+	},
+	{
+		scheduled: true,
+		timezone: 'Europe/London',
+	}
+);
