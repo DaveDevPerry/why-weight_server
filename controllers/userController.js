@@ -19,10 +19,20 @@ const loginUser = async (req, res) => {
 		console.log(user, 'user login user');
 		const first_name = user.first_name;
 		const last_name = user.last_name;
+		const defaultMeasurementUnit = user.defaultMeasurementUnit;
 		// const groups =
 		const userId = user._id;
 
-		res.status(200).json({ email, token, first_name, last_name, userId });
+		res
+			.status(200)
+			.json({
+				email,
+				token,
+				first_name,
+				last_name,
+				defaultMeasurementUnit,
+				userId,
+			});
 	} catch (error) {
 		res.status(400).json({ error: error.message });
 	}

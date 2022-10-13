@@ -23,6 +23,11 @@ const userSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		defaultMeasurementUnit: {
+			type: String,
+			required: true,
+			default: 'kilograms',
+		},
 		group_id: {
 			type: String,
 			required: false,
