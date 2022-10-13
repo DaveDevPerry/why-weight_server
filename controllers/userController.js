@@ -23,16 +23,14 @@ const loginUser = async (req, res) => {
 		// const groups =
 		const userId = user._id;
 
-		res
-			.status(200)
-			.json({
-				email,
-				token,
-				first_name,
-				last_name,
-				defaultMeasurementUnit,
-				userId,
-			});
+		res.status(200).json({
+			email,
+			token,
+			first_name,
+			last_name,
+			defaultMeasurementUnit,
+			userId,
+		});
 	} catch (error) {
 		res.status(400).json({ error: error.message });
 	}
@@ -75,6 +73,9 @@ const getUser = async (req, res) => {
 // update a user
 const updateUser = async (req, res) => {
 	const { id } = req.params;
+	console.log(id, 'id in update');
+	const { mode } = req.body;
+	console.log(mode, 'mode in update');
 	// check if id exists
 	if (!mongoose.Types.ObjectId.isValid(id)) {
 		return res.status(404).json({ error: 'No such user' });
@@ -88,6 +89,7 @@ const updateUser = async (req, res) => {
 		{
 			// gets all properties in body
 			...req.body,
+			defaultMeasurementUnit: mode,
 		}
 	);
 	// if (!checkUser) {
@@ -99,5 +101,32 @@ const updateUser = async (req, res) => {
 	}
 	res.status(200).json(user);
 };
+// // update a user
+// const updateUser = async (req, res) => {
+// 	const { id } = req.params;
+// 	// check if id exists
+// 	if (!mongoose.Types.ObjectId.isValid(id)) {
+// 		return res.status(404).json({ error: 'No such user' });
+// 	}
+// 	// const checkUser = await User.findById({ _id: id });
+// 	// console.log(checkUser, 'check user in update');
+// 	// console.log({ ...req.body }, 'req.body');
+// 	const user = await User.findByIdAndUpdate(
+// 		{ _id: id },
+// 		// second object contains data to update
+// 		{
+// 			// gets all properties in body
+// 			...req.body,
+// 		}
+// 	);
+// 	// if (!checkUser) {
+// 	// 	return res.status(404).json({ error: 'No such user' });
+// 	// }
+// 	// res.status(200).json(checkUser);
+// 	if (!user) {
+// 		return res.status(404).json({ error: 'No such user' });
+// 	}
+// 	res.status(200).json(user);
+// };
 
 module.exports = { signupUser, loginUser, updateUser, getUser };
