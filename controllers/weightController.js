@@ -101,7 +101,7 @@ const deleteWeight = async (req, res) => {
 	}
 	res.status(200).json(weight);
 };
-
+// fd
 // update a weight
 const updateWeight = async (req, res) => {
 	const { id } = req.params;
